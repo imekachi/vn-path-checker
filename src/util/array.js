@@ -1,0 +1,1 @@
+export const isInArr = (target, arr) => arr.indexOf(target) >= 0
