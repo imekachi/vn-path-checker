@@ -5,6 +5,9 @@ import { injectGlobal } from 'styled-components'
 // import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import pathChecker from './PathChecker'
+import { deadScenes, deadScenesManual } from './DeadScenes'
+// import vnConfig from './constants/vnConfig'
+import vnConfig_old from './constants/vnConfig_old'
 
 // eslint-disable-next-line no-unused-expressions
 injectGlobal`
@@ -21,7 +24,11 @@ injectGlobal`
 `
 
 // ReactDOM.render(<App />, document.getElementById('root'));
-pathChecker()
+console.log(pathChecker(null, vnConfig_old))
+
+// console.log('>> deadScenes(): ', deadScenes(vnConfig_old))
+// console.log('>> deadScenesManual(): ', deadScenesManual(vnConfig_old))
+
 document.write(`OPEN CONSOLE. 
 if no error/warning, then it should be fine.
 if there is error, number in xxx(yyy)

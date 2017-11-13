@@ -3,6 +3,8 @@ import config from './constants/vnConfig'
 import { isInArr } from './util/array'
 import { Int } from './util/primitive'
 import { prettyLog } from './util/print'
+import { deadScenes } from './DeadScenes'
+import { userScene, userScenes } from './UserScenes'
 
 /**
  * find all scenes that link with input scene
@@ -23,8 +25,6 @@ export const findInScenes = (target, scenes = config.scenes) => {
 }
 
 window.findInScenes = findInScenes
-export const userScene = (sceneId) => config.sceneOrder.indexOf(sceneId) + 1
-window.userScene = userScene
 
 export const indentIn = (name) => {
   //console.group(name)
@@ -36,7 +36,15 @@ export const indentOut = () => {
 }
 
 export const pathChecker = (specificScene, scenesData = config) => {
-  const { start, end, scenes } = scenesData
+  const { start, ends, scenes, sceneOrder } = scenesData
+
+  // run check deadScenes first
+  // if found, then return user mapped ids that are dead
+  const deadSceneIds = deadScenes(scenesData)
+  if ( deadSceneIds.length > 0 ) {
+    return userScenes(deadSceneIds, sceneOrder)
+  }
+
   let possiblePath = {} // that will be printed out at the end
   let breadcrumb = [] // cache which scenes we have checked, so we won't have to check again
   let safeScenes = [] // cache some scenes that we're so sure that this will definitely lead to an end scene
@@ -79,7 +87,7 @@ export const pathChecker = (specificScene, scenesData = config) => {
           let isDoorInt = typeof door === 'number'
           console.log('isInt', isDoorInt)
           !isDoorInt && console.log('door: ', door)
-          console.error(`DEAD By: ${prevSceneId}(${userScene(prevSceneId)}) from: ${sceneId}(${userScene(sceneId)})`)
+          console.error(`DEAD By: ${prevSceneId}(${userScene(prevSceneId, sceneOrder)}) from: ${sceneId}(${userScene(sceneId, sceneOrder)})`)
           console.warn('DEAD', route)
           breakLoop = true
           return route
@@ -120,7 +128,7 @@ export const pathChecker = (specificScene, scenesData = config) => {
 
   // prettyLog(traceBack(100))
   if ( !specificScene ) {
-    end.map((endSceneId) => {
+    ends.map((endSceneId) => {
       return possiblePath[endSceneId] = traceBack(endSceneId)
     })
   } else {
@@ -128,6 +136,7 @@ export const pathChecker = (specificScene, scenesData = config) => {
   }
 
   prettyLog(possiblePath)
+  return possiblePath
 }
 
 export default pathChecker
