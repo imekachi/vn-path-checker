@@ -25,6 +25,7 @@ injectGlobal`
 
 // ReactDOM.render(<App />, document.getElementById('root'));
 console.log(pathChecker(null, vnConfig_old))
+// console.log(pathChecker())
 
 // console.log('>> deadScenes(): ', deadScenes(vnConfig_old))
 // console.log('>> deadScenesManual(): ', deadScenesManual(vnConfig_old))

@@ -82,11 +82,11 @@ export const pathChecker = (specificScene, scenesData = config) => {
         }
 
         route = traceBack(prevSceneId)
-        const door = _.first(route)
-        if (!isStartScene(door) && !isInArr(prevSceneId, safeScenes)) {
-          let isDoorInt = typeof door === 'number'
-          console.log('isInt', isDoorInt)
-          !isDoorInt && console.log('door: ', door)
+        const lastStoppedScene = _.first(route)
+        if (!isStartScene(lastStoppedScene) && !isInArr(prevSceneId, safeScenes)) {
+          let isStoppedSceneInt = _.isNumber(lastStoppedScene)
+          console.log('isInt', isStoppedSceneInt)
+          !isStoppedSceneInt && console.log('door: ', lastStoppedScene)
           console.error(`DEAD By: ${prevSceneId}(${userScene(prevSceneId, sceneOrder)}) from: ${sceneId}(${userScene(sceneId, sceneOrder)})`)
           console.warn('DEAD', route)
           breakLoop = true
